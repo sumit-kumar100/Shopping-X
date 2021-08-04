@@ -194,5 +194,5 @@ JET_THEMES = [
 
 
 
-API_KEY = "test_00fdfd80a82bdae553372ec546b"
-AUTH_TOKEN = "test_26343b0f40ae03f99bba48b3a58"
+API_KEY = "" # Write your own instamojo API KEY
+AUTH_TOKEN = "" # Write your own instamojo AUTH TOKEN
