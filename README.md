@@ -1,4 +1,4 @@
-# Mystore
+# Mystore (sumit1196.pythonanywhere.com)
 This is an Ecommerce Website ( check this at "sumit1196.pythonanywhere.com" )
 
 Installation
@@ -11,7 +11,7 @@ Detail
 2. You can add product and its related product variant i.e Color-Size,Color,Size etc.
 3. Payment gateway etc......
 
-# Notes (Visit : sumit1196.pythonanywhere.com)
+# Notes
 1. In setting.py you have to write your own instamojo_payment_gateway ( APT_KEY and AUTH_TOKEN )
 
 Enjoy!!
