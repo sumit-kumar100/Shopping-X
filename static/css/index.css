@@ -1,0 +1,121 @@
+a{
+  text-decoration:none;
+  color: black;
+}
+
+h2{
+  text-align:center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.mySlides img{
+    width:100vw;
+    height:50vh;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position:absolute;
+  top:45%;
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+  
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+  
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* The dots/bullets/indicators */
+.dot{
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin:5px;
+  background-color: #bbb;
+  color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+  
+.active, .dot:hover {
+  background-color: #717171;
+  color: #717171;
+}
+
+/* mysliders Css */
+.mysliders {
+  width: 100%;
+  height: 315px;
+  position: relative;
+  margin: auto;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.mysliders::-webkit-scrollbar {
+  display: none;
+}
+
+.mysliders .slide {
+  display: flex;
+  position: absolute;
+  left: 0;
+  transition: 0.3s left ease-in-out;
+}
+
+.mysliders .item {
+  margin-right: 10px;
+}
+
+.mysliders .item:last-child {
+  margin-right: 0;
+}
+
+.ctrl {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.ctrl-btn {
+  padding:10px;
+  min-width: 50px;
+  background:black;
+  color:white;
+  border: none;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  position: absolute;
+  top: 50%;
+  margin-top: -27.5px;
+}
+
+.ctrl-btn.pro-prev {
+  left: 0;
+}
+
+.ctrl-btn.pro-next {
+  right: 0;
+}
+@media (min-width:0px) and (max-width:768px) {
+  .mySlides img{
+    width:100vw;
+    height:15vh;
+  }
+}

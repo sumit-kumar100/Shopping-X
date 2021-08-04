@@ -1,0 +1,257 @@
+{% load static %}
+{% load customfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+    <title>Product Detail</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="detail-container">
+        <!-- Product Gallary -->
+        {% if product.variant != 'None' %}
+            <div class="small-images">
+                {% for image in variant.productvariantmedia_set.all %}
+                <img src="{{ image.image.url }}" alt="">
+                {% endfor %}
+            </div>
+            <div class="big-image" id="zoom">
+                <img src="{{ variant.productvariantmedia_set.all.first.image.url }}" alt="" style="display:block; margin:auto;">
+                <br>
+                
+                <form action="{% if request.user.is_authenticated %}{% if variant.id|is_variant_in_cart:request.user %} /cart/ {% else %} {% url 'add_to_cart' %} {% endif %}{% else %} {% url 'add_to_cart' %}?path={{request.path}} {% endif %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" hidden value="{{ request.path }}" name="path">
+                    <input type="text" hidden value="{{ variant.id }}" name="variant_id">
+                    <button type="submit" class="cart-button">{% if request.user.is_authenticated %}{% if variant.id|is_variant_in_cart:request.user %} Go To Cart {% else %} Add to Cart {% endif %}{% else %} Add to Cart {% endif %}</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="small-images">
+                {% for image in product.productmedia_set.all %}
+                <img src="{{ image.image.url }}" alt="">
+                {% endfor %}
+            </div>
+            <div class="big-image" id="zoom">
+                <img src="{{ product.productmedia_set.all.first.image.url }}" alt="" style="display:block; margin:auto;">
+                <br>
+                <form action="{% if request.user.is_authenticated %}{% if product.id|is_product_in_cart:request.user %} /cart/ {% else %} {% url 'add_to_cart' %} {% endif %}{% else %} {% url 'add_to_cart' %}?path={{request.path}} {% endif %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" hidden value="{{ request.path }}" name="path">
+                    <input type="text" hidden value="{{ product.id }}" name="product_id">
+                    <button type="submit" class="cart-button">{% if request.user.is_authenticated %}{% if product.id|is_product_in_cart:request.user %} Go To Cart {% else %} Add to Cart {% endif %}{% else %} Add to Cart {% endif %}</button>
+                </form>
+            </div>
+        {% endif %}
+    
+        <div class="product-content">
+            <!-- Product Content -->
+            {% if product.variant != 'None' %}
+            <h2>{{ variant.title }}</h2>
+            <p class="description">{{ product.description }}</p>
+            <div class="price">
+                <span style="font-weight: bold;">
+                    ₹ {{ variant.price|sale_price:variant.discount }}
+                </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <del style="color:gray; font-size:13px;">
+                    ₹ {{ variant.price }}
+                </del>&nbsp;&nbsp;
+                <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                    Save {{ variant.discount }}%
+                </span>
+            </div>
+            {% else %}
+            <h2>{{ product.title }}</h2>
+            <p class="description">{{ product.description }}</p>
+            <div class="price">
+                <span style="font-weight: bold;">
+                    ₹ {{ product.price|sale_price:product.discount }}
+                </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <del style="color:gray; font-size:13px;">
+                    ₹ {{ product.price }}
+                </del>&nbsp;&nbsp;
+                <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                    Save {{ product.discount }}%
+                </span>
+            </div>
+            {% endif %}
+    
+            <!-- if Product has Size-Color/Size/Color Variant -->
+            {% if product.variant == 'Size-Color' %}
+            <div class="content-container">
+                <form method="POST" id="post-form">
+                    {% csrf_token %}
+                    <div class="custom-select">
+                        <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+                        <span class="text-uppercase" style="color:darkslategrey;">Size :</span>
+                        <select name="size" id="size">
+                            {% for variant_size in sizes %}
+                            <option {% if variant.size_id == variant_size.size_id %} selected {% endif %}
+                                value="{{ variant_size.size_id }}">
+                                {{ variant_size.size.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+                <br>
+                <form method="post" action="" id="post-color">
+                    {% csrf_token %}
+                    <div id="appendHere">
+                        <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                        <span class="text-uppercase" style="color:darkslategrey; display: block;">Color :</span>
+                        <div class="detail">
+                            {% for variant_color in colors %}
+                            <button class="color-button" onchange="this.form.submit();" name="variantid" id="variantid"
+                                value="{{ variant_color.id }}" {% if variant.color_id == variant_color.color_id %}
+                                style="border:2px solid#2874f0;;" {% endif %}>
+                                <a>
+                                    <img src="{{ variant_color.productvariantmedia_set.all.first.image.url }}">
+                                </a>
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% elif product.variant == 'Size' %}
+            <div class="content-container">
+                <form method="post" action="" id="post-size">
+                    {% csrf_token %}
+                    <div id="appendHere">
+                        <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                        <span class="text-uppercase" style="color:darkslategrey; display: block;">Size :</span>
+                        <div class="detail">
+                            {% for variant_size in sizes %}
+                            <input type="radio" {% if variant.size_id == variant_size.size_id %} checked {% endif %}
+                                name="variantid" id="variantid" value="{{ variant_size.id }}"
+                                onchange="this.form.submit();">
+                            <button class="color-button">
+                                {{ variant_size.size }}
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% elif product.variant == 'Color' %}
+            <div class="content-container">
+                <form method="post" action="" id="post-color">
+                    {% csrf_token %}
+                    <div id="appendHere">
+                        <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                        <span class="text-uppercase" style="color:darkslategrey; display: block;">Color :</span>
+                        <div class="detail">
+                            {% for variant_color in colors %}
+                            <button class="color-button" onchange="this.form.submit();" name="variantid" id="variantid"
+                                value="{{ variant_color.id }}" {% if variant.color_id == variant_color.color_id %}
+                                style="border:2px solid#2874f0;;" {% endif %}>
+                                <a>
+                                    <img src="{{ variant_color.productvariantmedia_set.all.first.image.url }}">
+                                </a>
+                            </button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+    
+            <!-- Selected -->
+            {% if product.variant != 'None' %}
+            <small><strong style="color:darkslategrey;">Availability : </strong> {% if variant.quantity > 0 %} In Stock {% else %} Out of Stock {% endif %}</small>
+            <small><strong style="color:darkslategrey;">Selected : </strong>{% if variant.size %} Size - {{ variant.size }}  {% endif %} {% if variant.color %} Color - {{ variant.color }} {% endif %}</small>
+            {% else %}
+            <small><strong style="color:darkslategrey;">Availability : </strong> {% if product.quantity > 0 %} In Stock {% else %} Out of Stock {% endif %}</small>
+            {% endif %}
+    
+            <br>
+            <p class='descsml' @media>{{ product.description }}</p>
+    
+            {% if product.variant != 'None' %}
+            <button onclick="Product_Details()" class="detailbutton" id="detailbutton">More Details</button>
+            <div class="specification" id="specification" style="display:none;">
+                {{product.detail|safe}}
+            </div>
+            {% else %}
+            <div class="specification">
+                {{product.detail|safe}}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <h2>Related Product</h2>
+    <br>
+    <div class="mysliders">
+        <div class="slide">
+            {% for related in relatedproduct %}
+            {% if related.variant != 'None' %}
+            <a class="item"
+                href="">
+                <img src="{{ related.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+                    style="width:200px; height:210px;">
+                <small></small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{ related.productvariant_set.all.first.price|sale_price:related.productvariant_set.all.first.discount }}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ related.productvariant_set.all.first.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ related.productvariant_set.all.first.discount }} %
+                    </span>
+                </div>
+            </a>
+            {% else %}
+            <a class="item"  href="{% url 'product_detail' related.id related.slug %}">
+                <img src="{{ related.productmedia_set.all.first.image.url }}" style="width:200px; height:210px;">
+                <small>{{ related.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{ related.price|sale_price:related.discount }}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ related.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ related.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div> 
+    <script src="{% static 'js/ajax-jquery-1.12.0.min.js' %}"> </script> <!-- jquery for subbmiting data through ajax -->   
+    <script src="{% static 'js/product_detail.js' %}"></script>
+    <script>
+        $(document).on('change', '#post-form', function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '{% url "ajaxcolor" %}',
+        data: {
+            productid: $('#productid').val(),
+            size: $('#size').val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        data_type: 'html',
+        success: function (data) {
+            console.log("success");
+            $('#appendHere').html(data.rendered_table);
+        },
+        error: function (data) {
+            alert("Got an error dude " + data);
+        }
+    });
+});
+    </script>
+</body>
+</html>

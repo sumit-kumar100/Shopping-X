@@ -1,0 +1,144 @@
+.profile-container{
+    display:flex;
+    width:80%;
+    margin: auto;
+}
+.profile-container .profile{
+    width:25%;
+    padding:.25rem;
+}
+
+.profile-container .profile h2{
+    font-family: normal;
+}
+
+.profile-container .profile a{
+    text-decoration: none;
+    display: block;
+    border:1px solid #2874f0;
+    color: #2874f0;;
+    text-align: center;
+    padding:10px 0px;
+    margin-top:10px;
+    border-radius: .25rem;
+    transition: 0.3s;
+}
+
+
+
+.profile-container .profile .active{
+    background-color:#2874f0;
+    color: white;
+}
+
+/* Managing Css of address form if there is form in context */
+
+.profile-container .profile-address{
+    width:75%;
+    padding: .90rem;
+    border:solid #f7f7f9;
+    margin:.50rem;
+}
+
+.profile-container .profile-address h2{
+    font-family: normal;
+}
+
+
+.profile-container .profile-address label{
+    display: block;
+    margin: .5rem;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+.profile-container .profile-address .form-control{
+    display:block;
+    width:100%;
+    padding:.375rem .75rem;
+    font-size:1rem;
+    line-height:1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+.profile-container .profile-address select{
+    display:block;
+    width:100%;
+    padding:.375rem .75rem;
+    font-size:1rem;
+    line-height:1.5;
+    color: #495057;
+    background-color: #fff;
+    /* background-clip: padding-box; */
+    border: 1px solid #ced4da;
+    border-radius: .25rem;    
+}
+.profile-container .profile-address .errorlist{
+    list-style:none;
+    color: #842029;
+    background-color: #f8d7da;
+    border-color:#f5c2c7;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size:1 rem;
+    padding: .75rem 1.25rem;
+    margin:.5rem 0rem;
+    border-radius: .25rem;
+    text-align:center;
+}
+.profile-container .profile-address .alert{
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color:#badbcc;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size:1 rem;
+    padding: .75rem 1.25rem;
+    margin:.5rem 0rem;
+    border-radius: .25rem;
+    text-align:center;
+}
+.submit-btn{
+    display: block;
+    width:100%;
+    border:1px solid #2874f0;
+    background-color: #2874f0;;
+    color:white;
+    cursor: pointer;
+    text-align: center;
+    padding:10px 0px;
+    margin-top:10px;
+    border-radius: .25rem;
+    transition: 0.3s;
+}
+
+
+/* Managing Css of address detail i.e,showing if there is address in context */
+
+.profile-container .address-detail{
+    width:75%;
+    padding: .90rem;
+    border:solid #f7f7f9;
+    margin:.50rem;
+    display:grid;
+    grid-template-columns: repeat(2,6fr);
+    grid-gap:1rem;
+}
+
+.profile-container .address-detail .address-card{
+    box-shadow: 0px 0px 40px 0px rgba(99, 91, 91, 0.2);
+
+}
+
+@media (min-width:0px) and (max-width:765px) {
+    .profile-container{
+        flex-direction: column;
+        width:100%;
+    }
+    .profile-container .profile{
+        width:70%;
+        margin: auto;
+    }
+    .profile-container .profile-address{
+        width:90%;
+        margin: auto;
+    }
+}

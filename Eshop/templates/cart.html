@@ -1,0 +1,114 @@
+{% load static %}
+{% load customfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <title>Cart</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h2 style="text-align: center; margin:10px 0px -30px 0px; font-family: 'Open Sans', sans-serif;">Shopping Cart</h2>
+    <br>
+    <main>
+        <div class="basket">
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <div class="alert">{{ message }}</div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="basket-labels">
+                <ul>
+                    <li class="item item-heading">Item</li>
+                    <li class="price">Price</li>
+                    <li class="quantity">Quantity</li>
+                    <li class="subtotal">Subtotal</li>
+                </ul>
+            </div>
+            {% for item in cart %}
+            {% if item.product_variant is not None %}
+            <div class="basket-product">
+                <div class="item">
+                    <div class="product-image">
+                        <img src="{{ item.product_variant.productvariantmedia_set.all.first.image.url }}" alt="Placholder Image 2" height="150" width="150"
+                            class="product-frame">
+                    </div>
+                    <div class="product-details">
+                        <h1><strong>{{ item.product_variant.title }}</strong></h1>
+                        <p><strong>
+                            {% if item.product_variant.size != None %}
+                                Size : {{ item.product_variant.size }}
+                            {% endif %}
+                            &nbsp;&nbsp;&nbsp;
+                            {% if item.product_variant.color != None %}
+                                Color : {{ item.product_variant.color }}
+                            {% endif %}
+                        </strong></p>
+                        <!-- <p>Product Code - 232321939</p> -->
+                    </div>
+                </div>
+                <div class="price">₹ {{ item.product_variant.price|sale_price:item.product_variant.discount }}</div>
+                <div class="quantity">
+                    <a href="/minus-quantity/?product_variant={{ item.id }}" class="quantity-btn" style="text-decoration:none; margin:10px; background-color: #2874f0;; color: white; padding:5px 7px;" >-</a>
+                    {{ item.quantity }}
+                    <a href="/plus-quantity/?product_variant={{ item.id }}" class="quantity-btn" style="text-decoration:none; margin:10px; background-color: #2874f0;; color: white; padding: 5px;">+</a>
+                </div>
+                <div class="subtotal">₹ {{ item.product_variant.price|sale_price:item.product_variant.discount|total_amount:item.quantity  }}</div>
+                <div class="remove">
+                    <button>Remove</button>
+                </div>
+            </div>
+            {% else %}
+            <div class="basket-product">
+                <div class="item">
+                    <div class="product-image">
+                        <img src="{{ item.product.productmedia_set.all.first.image.url }}" alt="Placholder Image 2" height="150" width="150"
+                            class="product-frame">
+                    </div>
+                    <div class="product-details">
+                        <h1><strong>{{ item.product.title }}</strong></h1>
+                    </div>
+                </div>
+                <div class="price">₹ {{ item.product.price|sale_price:item.product.discount }}</div>
+                <div class="quantity">
+                    <a href="/minus-quantity/?product={{ item.id }}" class="quantity-btn" style="text-decoration:none; margin:10px; background-color: #2874f0;; color: white; padding:5px 7px;" >-</a>
+                    {{ item.quantity }}
+                    <a href="/plus-quantity/?product={{ item.id }}" class="quantity-btn" style="text-decoration:none; margin:10px; background-color: #2874f0;; color: white; padding: 5px;">+</a>
+                </div>
+                <div class="subtotal">
+                    ₹ {{ item.product.price|sale_price:item.product.discount|total_amount:item.quantity  }}
+                </div>
+                <div class="remove">
+                    <button>Remove</button>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <aside>
+            <div class="summary">
+                <div class="summary-total-items"><span class="total-items"></span> Items in your Bag</div>
+                <div class="summary-subtotal">
+                    <div class="subtotal-title">Subtotal</div>
+                    <div class="subtotal-value final-value" id="basket-subtotal">₹ {{ cart|total_payable_amount }}</div>
+                </div>
+                <div class="summary-total">
+                    <div class="total-title">Total</div>
+                    <div class="total-value final-value" id="basket-total">₹ {{ cart|total_payable_amount }}</div>
+                </div>
+                <div class="summary-checkout">
+                    <a href="{% if cart %}{% url 'checkout' %}{% endif %}" class="checkout-cta">
+                        Checkout
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </main>
+</body>
+</html>

@@ -1,0 +1,149 @@
+{% load static %}
+{% load customfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+    <title>Checkout</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <div class="main">
+        <div class="left">
+            <div>
+                <span style="padding: 2px 5px;color: #2874f0; background-color: #f0f0f0;">1</span>
+                &nbsp;&nbsp;&nbsp;
+                <span style="color: #878787; font-size:16px; font-weight: bold;">LOGIN </span>
+                {% if request.user.is_authenticated %} <i class="fa fa-check" style="font-weight:lighter; color: #2874f0;"></i>{% endif %}
+                <br>
+                <span style="padding:0px 0px 0px 40px; font-size: small; font-weight: bold;">{{ request.user.first_name }}
+                    {{ request.user.last_name }} </span>
+                <span style="font-size:small; color:#878787;">{{ address.first.phone_no }}</span>
+            </div>
+            {% if cart %}
+            <div style="padding:0px;">
+                <div style="background-color:#2874f0; padding: 15px 10px 15px 10px;">
+                    <span style="padding: 2px 5px;color: #2874f0; background-color: #f0f0f0;">2</span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="color:white; font-size:16px; font-weight: bold;">DELIVERY ADDRESS </span>
+                    <br>
+                </div>
+                <div style="padding:20px;">
+                    {% if form %}
+                    <form action="" method="POST">
+                        <div class="form-group">
+                            <label>Address {% if not address %}(Add an address in profile){% endif %}</label>
+                            {% for ad in address %}
+                            <input type="radio" name="address" id="address{{ forloop.counter }}" value="{{ ad.id }}"
+                                style="margin:15px 20px;" required><span>{{ ad.locality }} , {{ ad.state }} - {{ ad.zipcode }}</span><br>
+                            {% endfor %}
+                        </div>
+                        {{ form.non_field_errors }}
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <!-- form is default name in CreateView -->
+                        <div class="form-group">
+                            <label>{{ field.label }}</label>
+                            {% if field.field.widget.input_type == 'select' %}
+                            {{field}}
+                            {% else %}
+                            <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.name }}"
+                                name="{{ field.name }}" placeholder="Enter {{ field.name }}" required>
+                            {% endif %}
+                            {{ field.errors }}
+                        </div>
+                        {% endfor %}
+                        <div class="form-group">
+                            <input type="submit" {% if not address %} disabled {% endif %} value="Place Order" class="submit-btn">
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <div style="padding: 15px 10px 15px 10px;">
+                    <span style="padding: 2px 5px;color: #2874f0; background-color: #f0f0f0;">3</span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="color:#878787; font-size:16px; font-weight: bold;">ORDER SUMMARY</span>
+                    <br>
+                </div>
+                <table>
+    
+                    <tr>
+                        <th style="text-align:center;">Product Name & Details</th>
+                        <th>Price</th>
+                        <th style="width:15%;">Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                    {% for item in cart %}
+                    {% if item.product_variant is not None %}
+                    <tr>
+                        <td style="display:flex; margin:10px;">
+                            <div>
+                                <img src="{{ item.product_variant.productvariantmedia_set.all.first.image.url }}"
+                                    height="60" width="60" alt="" style="float: left;">
+                            </div>
+                            <div class="detail" style="padding:10px;">
+                                <p>{{ item.product_variant.title }}</p>
+                                {% if item.product_variant.size != None %}
+                                <small> Size : {{ item.product_variant.size }}</small>
+                                {% endif %}
+                                &nbsp;&nbsp;&nbsp;
+                                {% if item.product_variant.color != None %}
+                                <small> Color : {{ item.product_variant.color }}</small>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td style="color: grey;">
+                            ₹{{ item.product_variant.price|sale_price:item.product_variant.discount }}
+                        </td>
+                        <td style="text-align:center; color:red;">
+                            {{ item.quantity }}
+                        </td>
+                        <td>
+                            {{ item.product_variant.price|sale_price:item.product_variant.discount|total_amount:item.quantity }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td style="display:flex; margin:10px;">
+                            <div>
+                                <img src="{{ item.product.productmedia_set.all.first.image.url }}" height="70" width="60"
+                                    alt="" style="float: left;">
+                            </div>
+                            <div class="detail" style="padding:10px;">
+                                <p>{{ item.product.title }}</p>
+                            </div>
+                        </td>
+                        <td style="color: grey;">
+                            ₹ {{ item.product.price|sale_price:item.product.discount }}
+                        </td>
+                        <td style="color:red; text-align: center;">
+                            {{ item.quantity }}
+                        </td>
+                        <td>
+                            {{ item.product.price|sale_price:item.product.discount|total_amount:item.quantity }}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        <div class="right">
+            <div>
+                <p><span>TOTAL</span><span style="float:right;">₹ {{ cart|total_payable_amount }}</span></p>
+                <br>
+                <p><span style="color:green;">SHIPPING</span><span style="float:right;">₹ 0</span></p>
+                <br>
+                <hr><br>
+                <p><span style="color:red;">GRAND TOTAL</span><span style="float:right;">₹ {{ cart|total_payable_amount }}</span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% load static %}
+{% load customfilters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <title>Profile</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <br>
+    <div class="profile-container">
+        <div class="profile">
+            <h2>Welcome {{ request.user.first_name }}</h2>
+            <a href="{% url 'profile' %}"  class="{% if dashboard_active %} active {% endif %}">
+                Dashboard
+            </a>
+            <a href="?profile=user" class="{% if profile_active %} active {% endif %}">
+                Profile
+            </a>
+            <a href="?address=user" class="{% if address_active %} active {% endif %}">
+                Address
+            </a>
+        </div>
+        {% if form %}
+            <div class="profile-address">
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert">{{ message }}</div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                <h2>Add Address</h2>
+                <form action="" method="POST">
+                    {{ form.non_field_errors }}
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <!-- form is default name in CreateView -->
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        {% if field.field.widget.input_type == 'select' %}
+                        {{field}}
+                        {% else %}
+                        <input type="{{ field.field.widget.input_type }}" class="form-control" id="{{ field.name }}" name="{{ field.name }}" placeholder="Enter {{ field.name }}" required>
+                        {% endif %}
+                        {{ field.errors }}
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <input type="submit" value="submit" class="submit-btn">
+                    </div>
+                </form>
+            </div>
+        {% elif profile %}
+        <div class="pf-container">
+            dsfdlj
+        </div>
+        {% else %}
+        <div class="address-detail">
+            {% for ad in address  %}
+            <div class="address-card">
+                <br>
+                <h4 style="text-align:center; font-weight:600;">Address {{ forloop.counter }}</h4>
+                <div style="padding:.8rem; line-height:30px">
+                    <address><span>Name : </span>{{ ad.name }}</address>
+                    <address><span>Locality : </span>{{ ad.locality }}</address>
+                    <address><span>State : </span>{{ ad.state }}</address>
+                    <address><span>ZipCode : </span>{{ ad.zipcode }}</address>
+                    <address><span>Phone : </span>{{ ad.phone_no }}</address>
+                    <a href="?delete-address={{ ad.id }}" class="submit-btn">Delete Address</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

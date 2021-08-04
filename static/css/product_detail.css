@@ -1,0 +1,173 @@
+.detail-container{
+    padding:10px;
+    display: grid;
+    grid-template-columns: 1fr 5fr 7fr;
+    grid-gap:2rem;
+    height: 90vh;
+    margin-bottom:85px;
+}
+.big-image img{
+    width:95%;
+    height:auto;
+}
+
+.small-images img{
+    width:95%;
+    height: auto;
+    cursor: pointer;
+}
+.product-content{
+    padding:10px;
+}
+.product-content h2{
+    text-align:center;
+    font-family: 'Be Vietnam';
+}
+.product-content p{
+    padding:10px;
+    font-family:'Comic Neue';
+    font-size:17px;
+}
+.product-content small{
+    padding:10px;
+}
+.product-content>div{
+    padding:10px;
+    
+}
+.price{
+    margin:10px;
+    padding:10px;
+}
+.custom-select select{
+    display: block;
+    outline: none;
+    margin:5px;
+    padding:4px 20px;
+}
+.color-button{
+    cursor: pointer;
+    background-color:white;
+    color:white;
+    border:none;
+    outline:none;
+    margin:10px;
+    padding:0px;
+}
+.color-button img{
+    height:80px;
+    width:80px;
+}
+.cart-button{
+    display: block;
+    width:100%;
+    background-color: #ff9f00;
+    cursor: pointer;
+    padding:15px;
+    border:1px solid lightgrey;
+    color:white;
+    font-size:1rem;
+}
+.detailbutton{
+    border:none;
+    outline:none;
+    background-color:white;
+    cursor: pointer;
+    color: #2874f0;
+    padding:10px;
+    text-decoration:underline;
+    
+}
+.specification{
+    border:1px solid lightgray;
+    margin:10px;
+}
+.specification p{
+    font-weight: Roboto,Arial,sans-serif;
+    color: #2874f0;
+}
+.specification table{
+    font-family: Arial, Helvetica, sans-serif;
+    line-height:40px;
+    border: 0.5px solid rgb(233, 229, 229);
+    padding:10px;
+}
+.specification table tbody tr td{
+    color:gray;
+}
+.specification table tbody tr td ul{
+    list-style:none;
+    color: black;
+}
+a{
+    color: black;
+    text-decoration: none;
+}
+h2{
+    text-align:center;
+    font-family: 'Courier New', Courier, monospace;
+}
+.mysliders{
+    overflow: auto;
+    width:100%;
+    padding:10px;
+}
+.mysliders .slide .item{
+    width:17%;
+    display: block;
+    margin:8px;
+    padding:8px;
+}
+
+
+@media (min-width:0px) and (max-width:765px) {
+    .detail-container{
+        grid-template-columns:repeat(1,12fr)
+    }
+    .small-images img{
+        height:80px;
+        width:70px;
+        margin:0px;
+        border:0.5px solid rgb(233, 229, 229);;
+    }
+
+    .description{
+        display:none;
+    }
+    .big-image{
+        margin-top:-25px;
+    }
+    .big-image img{
+        padding:0px;
+        margin:0px;
+    }
+    .color-button img{
+        height:60px;
+        width:60px;
+    }
+    .cart-button{
+        position:sticky;
+    }
+    .product-content h2{
+        margin-top:-30px;
+    }
+    .text-uppercase{
+        margin-top:-20px;
+    }
+    .specification table{
+        line-height:30px;
+        padding:0px;
+    }
+    .price{
+        margin: 0px;
+    }
+}
+
+@media (min-width:766px) {
+    .product-content{
+        overflow: auto;
+    }
+    .descsml{
+        display:none;
+    }
+}

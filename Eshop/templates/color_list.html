@@ -1,0 +1,13 @@
+<input type="hidden" name="size" id="size" value="{{ size_id }}">
+<span class="text-uppercase" style="color:darkslategrey; display: block;">Color :</span>
+<div class="detail">
+    {% for variant_color in colors %}
+    <button class="color-button" onchange="this.form.submit();" name="variantid" id="variantid"
+        value="{{ variant_color.id }}" {% if variant.color_id == variant_color.color_id %}
+        style="border:2px solid#2874f0;;" {% endif %}>
+        <a>
+            <img src="{{ variant_color.productvariantmedia_set.all.first.image.url }}">
+        </a>
+    </button>
+    {% endfor %}
+</div>

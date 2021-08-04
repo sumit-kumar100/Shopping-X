@@ -1,0 +1,100 @@
+{% load static %}
+{% load customfilters %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/myorders.css' %}">
+    <title>My Orders</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    <h2 style="text-align: center; margin:10px 0px -30px 0px; font-family: 'Open Sans', sans-serif;">My Orders</h2>
+    <br>
+    <main>
+        <div class="basket">
+            <div class="basket-labels">
+                <ul>
+                    <li class="item item-heading">Item</li>
+                    <li class="price">Price</li>
+                    <li class="quantity">Quantity</li>
+                    <li class="subtotal">Subtotal</li>
+                    <li class="date">Date</li>
+                    <li class="status">Status</li>
+                </ul>
+            </div>
+            {% for myorder in myorders %}
+            {% for item in myorder.orderitem_set.all %}
+            {% if item.product_variant != None %}
+            <div class="basket-product">
+                <div class="item">
+                    <div class="product-image">
+                        <img src="{{ item.product_variant.productvariantmedia_set.all.first.image.url }}"
+                            alt="Placholder Image 2" height="150" width="150" class="product-frame">
+                    </div>
+                    <div class="product-details">
+                        <h1><strong>{{ item.product_variant.title }}</strong></h1>
+                        <p>
+                            <strong>
+                                {% if item.product_variant.size != None %}
+                                Size : {{ item.product_variant.size }}
+                                {% endif %}
+                                &nbsp;&nbsp;&nbsp;
+                                {% if item.product_variant.color != None %}
+                                Color : {{ item.product_variant.color }}
+                                {% endif %}
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+                <div class="price">₹ {{ item.price }}</div>
+                <div class="quantity">
+                    {{ item.quantity }}
+                </div>
+                <div class="subtotal">
+                    ₹ {{item.price|total_amount:item.quantity }}
+                </div>
+                <div class="date">
+                    {{ myorder.date }}
+                </div>
+                <div class="remove">
+                    <button {% if myorder.order_status == 'PLACED' %} style="background-color:rgb(88, 167, 10);"{% elif myorder.order_status == 'CANCELLED'%} style="background-color:red;"{% elif myorder.order_status == 'COMPLETED'%} style="background-color:#2874f0;"{% else %} style="background-color:rgb(226, 156, 26);"{% endif %}>
+                        {{ myorder.order_status }}
+                    </button>
+                </div>
+            </div>
+            {% else %}
+            <div class="basket-product">
+                <div class="item">
+                    <div class="product-image">
+                        <img src="{{ item.product.productmedia_set.all.first.image.url }}" alt="Placholder Image 2"
+                            height="150" width="150" class="product-frame">
+                    </div>
+                    <div class="product-details">
+                        <h1><strong>{{ item.product.title }}</strong></h1>
+                    </div>
+                </div>
+                <div class="price">₹ {{ item.price }}</div>
+                <div class="quantity">
+                    {{ item.quantity }}
+                </div>
+                <div class="subtotal">
+                    ₹ {{item.price|total_amount:item.quantity }}
+                </div>
+                <div class="date">
+                    {{ myorder.date }}
+                </div>
+                <div class="remove">
+                    <button {% if myorder.order_status == 'PLACED' %} style="background-color:rgb(88, 167, 10);"{% elif myorder.order_status == 'CANCELLED'%} style="background-color:red;"{% elif myorder.order_status == 'COMPLETED'%} style="background-color:#2874f0;"{% else %} style="background-color:rgb(226, 156, 26);"{% endif %}>
+                        {{ myorder.order_status }}
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,223 @@
+{% load static %}
+{% load customfilters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eshop</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    <!-- Slideshow container -->
+    <div class="slideshow-container">
+        {% for slider in sliders %}
+        <div class="mySlides fade">
+            <img src="{{ slider.image.url }}">
+        </div>
+        {% endfor %}
+        <!-- Next and previous buttons -->
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+
+    <!-- The dots/circles -->
+    <div style="text-align:center;">
+        <span class="dot" onclick="currentSlide(1)">&#8226;</span>
+        <span class="dot" onclick="currentSlide(2)">&#8226;</span>
+        <span class="dot" onclick="currentSlide(3)">&#8226;</span>
+        <span class="dot" onclick="currentSlide(4)">&#8226;</span>
+    </div>
+    <br>
+    <h2>Deal of Day</h2>
+    <br>
+    <div class="mysliders" id="mysliders">
+        <div class="slide" id="slide">
+            {% for trend in dealofday %}
+            {% if trend.product.variant != 'None' %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+                    style="width:200px; height:200px;">
+                <small>{{ trend.product.productvariant_set.all.first.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{trend.product.productvariant_set.all.first.price|sale_price:trend.product.productvariant_set.all.first.discount}}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.productvariant_set.all.first.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.productvariant_set.all.first.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% else %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productmedia_set.all.first.image.url }}" style="width:200px; height:200px;">
+                <small>{{ trend.product.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{ trend.product.price|sale_price:trend.product.discount }}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <button class="ctrl-btn pro-prev">&#10094;</button>
+        <button class="ctrl-btn pro-next">&#10095;</button>
+    </div>
+
+    <br>
+    <h2>Trending Product</h2>
+    <br>
+    <div class="mysliders">
+        <div class="slide">
+            {% for trend in trendingproduct %}
+            {% if trend.product.variant != 'None' %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+                    style="width:200px; height:200px;">
+                <small>{{ trend.product.productvariant_set.all.first.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{trend.product.productvariant_set.all.first.price|sale_price:trend.product.productvariant_set.all.first.discount}}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.productvariant_set.all.first.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.productvariant_set.all.first.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% else %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productmedia_set.all.first.image.url }}" style="width:200px; height:200px;">
+                <small>{{ trend.product.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{ trend.product.price|sale_price:trend.product.discount }}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+    <h2>Mens Top Wear</h2>
+    <br>
+    <div class="mysliders">
+        <div class="slide">
+            {% for trend in menstopwear %}
+            {% if trend.product.variant != 'None' %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+                    style="width:200px; height:200px;">
+                <small>{{ trend.product.productvariant_set.all.first.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{trend.product.productvariant_set.all.first.price|sale_price:trend.product.productvariant_set.all.first.discount}}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.productvariant_set.all.first.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.productvariant_set.all.first.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% else %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productmedia_set.all.first.image.url }}" style="width:200px; height:200px;">
+                <small>{{ trend.product.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{ trend.product.price|sale_price:trend.product.discount }}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+    <h2>Top Womens Wear</h2>
+    <br>
+    <div class="mysliders">
+        <div class="slide">
+            {% for trend in womenstopwear %}
+            {% if trend.product.variant != 'None' %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productvariant_set.all.first.productvariantmedia_set.all.first.image.url }}"
+                    style="width:200px; height:200px;">
+                <small>{{ trend.product.productvariant_set.all.first.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{trend.product.productvariant_set.all.first.price|sale_price:trend.product.productvariant_set.all.first.discount}}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.productvariant_set.all.first.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.productvariant_set.all.first.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% else %}
+            <a class="item" style="padding:10px; margin:10px;"
+                href="{% url 'product_detail' trend.product.id trend.product.slug %}">
+                <img src="{{ trend.product.productmedia_set.all.first.image.url }}" style="width:200px; height:200px;">
+                <small>{{ trend.product.title }}</small>
+                <div style="margin-top:10px;">
+                    <small>
+                        ₹ {{ trend.product.price|sale_price:trend.product.discount }}
+                    </small>&nbsp;&nbsp;
+                    <del style="color:gray; font-size:13px;">
+                        ₹ {{ trend.product.price }}
+                    </del>&nbsp;&nbsp;
+                    <span style="color:rgba(241, 68, 24, 0.952); font-size:13px;">
+                        {{ trend.product.discount }}%
+                    </span>
+                </div>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <script src="{% static 'js/index.js' %}"></script>
+    </div>
+</body>
+
+</html>
