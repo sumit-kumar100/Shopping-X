@@ -1,5 +1,5 @@
-# Mystore (sumit1196.pythonanywhere.com)
-This is an Ecommerce Website ( check this at "sumit1196.pythonanywhere.com" )
+# Mystore (Sumit1196.pythonanywhere.com)
+This is an Ecommerce Website ( check this at "Sumit1196.pythonanywhere.com" )
 
 Installation
 1. Install project.
