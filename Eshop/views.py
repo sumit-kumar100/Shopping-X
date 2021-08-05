@@ -358,7 +358,7 @@ def AddToCart(request):
             product = Product.objects.get(id=product_id)
             cart = Cart.objects.create(product=Product(product.id),user=User(user.id))
             cart.save()
-        return HttpResponseRedirect(path)
+        return HttpResponseRedirect('/cart/')
 
     path = request.GET['path']
     return HttpResponseRedirect(path)
