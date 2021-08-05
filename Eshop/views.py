@@ -203,7 +203,7 @@ class ProductListView(View):
         # Product according to category_filter
         category = request.GET.get('category')
         if category:
-            product = product.filter(subcategoryvariant=category)
+            product = Product.objects.filter(subcategoryvariant=category)
         
         # Product according to color_filter
         color = request.GET.get('color') 
