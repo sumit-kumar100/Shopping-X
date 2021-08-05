@@ -126,10 +126,10 @@
                         <input type="hidden" name="size" id="size" value="{{ size_id }}">
                         <span class="text-uppercase" style="color:darkslategrey; display: block;">Size :</span>
                         <div class="detail">
-                            <select name="variantid" id="variantid">
+                            <select name="variantid" id="variantid" onchange="this.form.submit();">
                                 {% for variant_size in sizes %}
                                 <option {% if variant.size_id == variant_size.size_id %} selected {% endif %}
-                                    value="{{ variant_size.size_id }}">
+                                    value="{{ variant_size.id }}">
                                     {{ variant_size.size }}
                                 </option>
                                 {% endfor %}
