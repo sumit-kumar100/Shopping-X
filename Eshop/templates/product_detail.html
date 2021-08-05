@@ -126,14 +126,14 @@
                         <input type="hidden" name="size" id="size" value="{{ size_id }}">
                         <span class="text-uppercase" style="color:darkslategrey; display: block;">Size :</span>
                         <div class="detail">
-                            {% for variant_size in sizes %}
-                            <input type="radio" {% if variant.size_id == variant_size.size_id %} checked {% endif %}
-                                name="variantid" id="variantid" value="{{ variant_size.id }}"
-                                onchange="this.form.submit();">
-                            <button class="color-button">
-                                {{ variant_size.size }}
-                            </button>
-                            {% endfor %}
+                            <select name="variantid" id="variantid">
+                                {% for variant_size in sizes %}
+                                <option {% if variant.size_id == variant_size.size_id %} selected {% endif %}
+                                    value="{{ variant_size.size_id }}">
+                                    {{ variant_size.size }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </form>
