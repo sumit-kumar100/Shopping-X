@@ -1,5 +1,5 @@
-# Mystore (Sumit1196.pythonanywhere.com)
-This is an Ecommerce Website ( check this at "Sumit1196.pythonanywhere.com" )
+# Mystore
+This is an Ecommerce Website based on Django.
 
 Installation
 1. Install project.
