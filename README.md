@@ -6,7 +6,7 @@ Installation
 2. Create virtual environment. ( Optional )
 3. Run command pip install -r requiremets.txt
 
-![](static/img/Screenshot%202021-10-23%20at%2014-33-37%20Eshop.png)
+<img src="static/img/Screenshot%202021-10-23%20at%2014-33-37%20Eshop.png">
 
 Detail
 1. you can add categories,subcategories and further subcategory i.e, Men's > Casual Wear > Tshirt.
