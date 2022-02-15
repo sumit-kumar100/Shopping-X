@@ -23,4 +23,4 @@ Detail
 # Notes
 1. In setting.py you have to write your own instamojo_payment_gateway ( APT_KEY and AUTH_TOKEN )
 
-Enjoy!!
+# Enjoy 🥳🥳🥳🥳
