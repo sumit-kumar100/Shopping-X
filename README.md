@@ -1,11 +1,6 @@
 # Mystore
 This is an Ecommerce Website based on Django.
 
-Installation
-1. Install project.
-2. Create virtual environment. ( Optional )
-3. Run command pip install -r requiremets.txt
-
 <img src="static/img/Screenshot%202021-10-23%20at%2014-33-37%20Eshop.png" width="400" height="200">
 
 <img src="static/img/Screenshot%202021-10-23%20at%2014-34-43%20Product%20Detail.png" width="400" height="200">
